@@ -1,38 +1,28 @@
-// Список имен и стран для примера
-const namesDatabase = {
-  "John": "USA, UK",
-  "Pedro": "Portugal, Spain",
-  "Ivan": "Russia, Ukraine",
-  "Mario": "Italy",
-  "Lucas": "Brazil",
-  "Hiroshi": "Japan"
-};
+const fetch = require('node-fetch');
 
-// Ответ ИИ
-function respond() {
-  const input = document.getElementById('userInput').value;
-  const responseElement = document.getElementById('response');
+// Используйте ваш ключ API, который доступен как переменная окружения
+const apiKey = process.env.OPENAI_API_KEY;
 
-  // Если имя есть в базе
-  if (namesDatabase[input]) {
-    const response = `The name "${input}" is commonly found in: ${namesDatabase[input]}.`;
+// Пример вызова OpenAI API с использованием вашего ключа
+async function getResponseFromOpenAI(prompt) {
+  const response = await fetch('https://api.openai.com/v1/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'text-davinci-003',
+      prompt: prompt,
+      max_tokens: 100
+    })
+  });
 
-    // Выводим на страницу
-    responseElement.textContent = response;
-
-    // Преобразуем ответ в речь
-    const speech = new SpeechSynthesisUtterance(response);
-    speech.lang = 'en-US'; // Английский
-    window.speechSynthesis.speak(speech);
-  } else {
-    const response = `I don't know the origin of the name "${input}". Try another name.`;
-
-    // Выводим на страницу
-    responseElement.textContent = response;
-
-    // Преобразуем ответ в речь
-    const speech = new SpeechSynthesisUtterance(response);
-    speech.lang = 'en-US'; // Английский
-    window.speechSynthesis.speak(speech);
-  }
+  const data = await response.json();
+  console.log(data);
 }
+
+// Пример использования
+getResponseFromOpenAI('Hello, AI!').then(response => {
+  console.log(response);
+});
