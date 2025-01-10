@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Husband</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f0f8ff; }
+    #response { font-size: 1.2em; margin-top: 20px; color: #333; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Your Husband</h1>
+  <p>Write something to your husband:</p>
+  <input type="text" id="userInput" placeholder="Write a message...">
+  <button onclick="sendMessage()">Send</button>
+  <div id="response"></div>
+
+  <script>
+    async function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      const responseElement = document.getElementById('response');
+      responseElement.textContent = 'Please wait...';
+
+      // Placeholder response
+      const response = 'Hello, my love! How are you today?';
+
+      responseElement.textContent = response;
+
+      // Text-to-speech
+      const speech = new SpeechSynthesisUtterance(response);
+      speech.lang = 'en-US'; // English language
+      window.speechSynthesis.speak(speech);
+    }
+  </script>
+</body>
+</html>
